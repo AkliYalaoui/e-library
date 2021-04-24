@@ -10,4 +10,4 @@
     <title><?php echo $title ?? "Bibliotheque" ?></title>
     <script src="<?php echo $js ?? 'layouts/js/app.js'?>" defer></script>
 </head>
-<body class="<?php echo $loginBody ?? ''?>">
+<body class="<?php echo ($loginBody ?? ''). ($homeBody ?? '')?>">
