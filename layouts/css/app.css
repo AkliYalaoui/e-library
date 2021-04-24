@@ -1,0 +1,118 @@
+/*Global Rules*/
+:root{
+    --main-color :#6C63FF;
+}
+::placeholder{
+    color: #333;
+    opacity: .5;
+}
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+}
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.text-center{
+    text-align: center;
+}
+.label{
+    margin-bottom: 5px;
+    text-transform: capitalize;
+    color: #555;
+}
+.input{
+    padding: 10px 15px 10px 32px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    outline: 0;
+}
+.submit-input{
+    display: inline-block;
+    width: max-content;
+    margin-left: auto;
+    border: 1px solid transparent;
+    background-color: var(--main-color,#6C63FF);
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 3px;
+    outline: O;
+}
+.input:focus{
+    border-color: var(--main-color,#6C63FF) ;
+}
+.img-container img{
+    width: 100%;
+    object-fit: cover;
+}
+/*Auth styles*/
+.login-body{
+    min-height: 100vh;
+}
+.auth-link{
+    color: var(--main-color,#6C63FF);
+}
+.form-auth{
+    flex: 1;
+}
+.form-auth .img-container{
+    flex: 1;
+}
+@media (max-width: 768px) {
+    .form-auth .img-container{
+        flex: 0;
+        display: none;
+    }
+}
+.form-auth .form-container{
+    flex: 1;
+}
+.form-container h1{
+    margin-bottom: 5px;
+    color: #555;
+}
+.form-container h1 span{
+    color: var(--main-color);
+}
+.form-container p{
+    color: #555;
+    margin-bottom: 40px;
+}
+.form-auth form{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.form-group{
+    position: relative;
+}
+.form-group input{
+    width: 100%;
+}
+.form-group i {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    color: var(--main-color);
+}
+.form-error{
+    padding: 5px;
+    color: #713434;
+    background-color: #ffeaea;
+    border-radius: 4px;
+    margin: 10px 0;
+}
