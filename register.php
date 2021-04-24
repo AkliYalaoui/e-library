@@ -51,6 +51,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email'
             }else{
                 $_SESSION['logged'] = "user";
                 $_SESSION['email'] = $email;
+                $_SESSION['name'] = $name;
                 header('Location: index.php');
                 exit();
             }

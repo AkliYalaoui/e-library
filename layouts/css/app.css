@@ -144,6 +144,24 @@
     justify-content: space-between;
     align-items: center;
 }
+.nav-mobile{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-mobile button{
+    background-color: #fff;
+    color: var(--main-color);
+    outline: 0;
+    border: 1px solid #fff;
+    padding: 5px;
+    cursor: pointer;
+    display: none;
+}
+.nav-mobile button:hover,
+.nav-mobile button:focus{
+    border-color: var(--main-color);
+}
 .nav-title a{
     text-decoration: none;
     color: #666;
@@ -161,6 +179,7 @@
     margin-left: 20px;
     color: #666;
 }
+
 .nav-links > li > a{
     text-decoration: none;
     font-size: 17px;
@@ -216,7 +235,58 @@
     color: var(--main-color);
     background-color: #fff;
 }
-
+@media (max-width: 1000px) {
+    .nav-bar{
+        position: relative;
+        padding: 10px 15px;
+    }
+    .nav-mobile{
+        flex: 1;
+    }
+    .nav-mobile button{
+        display: block;
+    }
+    .nav-links{
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #fff;
+        z-index: 999;
+        box-shadow: 1px 1px 5px rgba(0,0,0,.1),
+        -1px -1px 5px rgba(0,0,0,.1);
+    }
+    .nav-links.open{
+        display: block;
+    }
+    .nav-links > li{
+        display: block;
+        margin-left: 0;
+    }
+    .nav-links > li > a{
+        padding: 15px;
+        display: block;
+        transition: initial;
+    }
+    .nav-links > li > a.active{
+        color: var(--main-color);
+    }
+    .nav-links > li >  a:hover{
+        color: #fff;
+        border-bottom:none;
+        background-color: var(--main-color);
+    }
+    .sub-nav button{
+        padding: 15px;
+        border-radius: 0;
+        display: block;
+        width: 100%;
+    }
+    .sub-nav ul{
+        width: 100%;
+        top: 48px;
+    }
+}
 /*Home rules*/
 .form-search{
     position: absolute;
@@ -226,7 +296,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    width: 100%;
+    width: 95%;
     max-width: 600px;
     box-shadow: 7px 4px 5px rgba(0,0,0,.1),
                 -7px -4px 5px rgba(0,0,0,.1);

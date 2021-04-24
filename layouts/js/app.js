@@ -1,5 +1,19 @@
 const subNavButton = document.getElementById('sub-nav-button'),
-     subNavMenu = document.getElementById('sub-nav-menu');
+     subNavMenu = document.getElementById('sub-nav-menu'),
+    navButton = document.getElementById('nav-button'),
+    navMenu = document.getElementById('nav-menu');
+
+if(navButton && navMenu){
+    navButton.addEventListener('click',(e)=>{
+        e.stopPropagation();
+        navMenu.classList.toggle('open');
+    });
+    window.addEventListener('click',(e) =>{
+        if( ['nav-button','nav-menu'].indexOf(e.target.id) === -1 && navMenu.classList.contains('open')){
+            navMenu.classList.remove('open');
+        }
+    });
+}
 
 if(subNavButton && subNavMenu){
     subNavButton.addEventListener('click',(e)=>{

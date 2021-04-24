@@ -20,9 +20,11 @@
         $password = sha1($password);
         $stmt->bindParam(':password', $password);
         $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
         if($stmt->rowCount() > 0){
             $_SESSION['logged'] = "user";
-            $_SESSION['email'] = $email;
+            $_SESSION['email'] = $user->email;
+            $_SESSION['name'] = $user->name;
             header('Location: index.php');
             exit();
         }else{
