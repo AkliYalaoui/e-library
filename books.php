@@ -25,10 +25,7 @@ $stmt = $con->prepare('SELECT * FROM `books` ORDER BY created_at DESC LIMIT :row
 $stmt->bindParam(":row",$start_row,PDO::PARAM_INT);
 $stmt->execute();
 $books = $stmt->fetchAll(PDO::FETCH_OBJ);
-if(count($books) === 0){
-  header("Location: includes/templates/404.html");
-  exit();
-}
+if(count($books) > 0):
 $count = $con->query("SELECT count(id) FROM `books`")->rowCount();
 
 ?>
@@ -54,6 +51,15 @@ $count = $con->query("SELECT count(id) FROM `books`")->rowCount();
     <?php endforeach; ?>
   </div>
 </main>
+<?php else: ?>
+<main class="b-container no-results">
+  <p class="form-error text-center">
+    Nous ne disposons d'aucun livre pour le moment. Merci pour votre compréhension
+  </p>
+  <img src="layouts/images/404.png" alt="no-results">
+</main>
+<?php endif; ?>
+
 <?php
 require_once "includes/templates/footer.php";
 ?>

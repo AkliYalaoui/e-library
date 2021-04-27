@@ -32,10 +32,7 @@ $stmt->bindValue(":search","%$search%");
 var_dump($stmt->queryString);
 $stmt->execute();
 $books = $stmt->fetchAll(PDO::FETCH_OBJ);
-if(count($books) === 0){
-  header("Location: includes/templates/404.html");
-  exit();
-}
+if(count($books) > 0):
 ?>
 <main class="b-container">
   <div class="book-container">
@@ -50,6 +47,15 @@ if(count($books) === 0){
     <?php endforeach; ?>
   </div>
 </main>
+<?php else: ?>
+<main class="b-container no-results">
+  <p class="form-error text-center">
+    Nous n'avons trouvé aucun livre avec un titre similaire à votre recherche. Essayez une <a href="index.php">autre
+      fois</a>
+  </p>
+  <img src="layouts/images/404.png" alt="no-results">
+</main>
+<?php endif; ?>
 <?php
 require_once "includes/templates/footer.php";
 ?>

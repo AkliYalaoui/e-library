@@ -33,7 +33,30 @@ $book = $stmt->fetch(PDO::FETCH_OBJ);
 ?>
 
 <div class="book-parent">
-  <h3 class="book-title"><?php echo $book->title ?></h3>
+  <div class="borrow-book">
+    <?php 
+    $stmt = $con->prepare("SELECT * FROM `borrow` WHERE book_id=:book_id LIMIT 1");
+    $stmt->bindParam(':book_id', $bookid);
+    $stmt->execute();
+    $book_borrowed = $stmt->fetch(PDO::FETCH_OBJ);
+    if($stmt->rowCount() === 0):
+  ?>
+    <form action="borrow.php" method="post">
+      <input type="hidden" value="<?php echo $book->id?>" name="id">
+      <input type="hidden" value="<?php echo $book->loan_duration?>" name="loan_duration">
+      <input type="submit" value="Emprunter ce livre" name="borrow">
+    </form>
+    <?php elseif($book_borrowed->user_id == $_SESSION['id']): ?>
+    <form action="delete_borrow.php" method="post">
+      <input type="hidden" value="<?php echo $book->id?>" name="id">
+      <input type="hidden" value="<?php echo $book->loan_duration?>" name="loan_duration">
+      <input type="submit" value="Rendre ce livre" name="delete_borrow">
+    </form>
+    <?php else: ?>
+    <div class="form-error">Ce livre est indisponible à l'emprunt</div>
+    <?php endif; ?>
+    <h3 class="book-title"><?php echo $book->title ?></h3>
+  </div>
   <div class="book-info">
     <div class="book-thumbnail">
       <img src="<?php echo $book->thumbnail ?>" alt="book thumbnail">

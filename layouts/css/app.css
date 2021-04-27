@@ -555,6 +555,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 10px;
+
 }
 
 .book {
@@ -596,14 +597,29 @@
   margin: 150px auto;
   padding: 5px;
 }
-
+.borrow-book{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.borrow-book input{
+  display: inline-block;
+  border: 1px solid var(--main-color);
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+  background-color: var(--main-color);
+  padding: 5px 10px;
+}
 .book-title {
   color: var(--main-color);
   text-decoration: underline;
   text-align: center;
   font-size: 1.5rem;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-right: 10px;
 }
 
 .book-info {
@@ -615,6 +631,7 @@
   justify-content: center;
   align-items: stretch;
 }
+
 .book-thumbnail {
   text-align: center;
 }
@@ -625,30 +642,48 @@
   width: 100%;
   object-fit: contain;
 }
-.book-info dl{
+
+.book-info dl {
   padding: 15px;
 }
-.book-info dd{
+
+.book-info dd {
   text-indent: 30px;
   color: #666;
 }
-.book-info dt{
+
+.book-info dt {
   margin-top: 10px;
   margin-bottom: 5px;
   background-color: var(--main-color);
   display: inline-block;
   color: #fff;
-  padding-left:10px;
+  padding-left: 10px;
   padding-right: 10px;
   border-radius: 10px;
 }
-.book-info dt::after{
+
+.book-info dt::after {
   content: " :";
 }
 
-.book-parent p{
+.book-parent p {
   text-indent: 20px;
   color: #666;
   margin: 10px;
   padding: 10px;
+}
+
+/*No result*/
+.no-results a{
+  all: unset;
+  text-decoration: underline; 
+  font-weight: bold;
+  cursor: pointer;
+}
+.no-results img{
+  max-width: 500px;
+  object-fit: contain;
+  display: block;
+  margin: 40px auto;
 }
