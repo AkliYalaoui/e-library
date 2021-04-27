@@ -1,1 +1,55 @@
 <?php
+session_start();
+if (!isset($_SESSION['logged'])) {
+  header('Location: login.php');
+  exit();
+}
+
+$title = "Home";
+$homeBody = "home-body";
+$navLinks = [
+  "home" => "index.php",
+  "loan" => "onloan.php",
+  "book" => "books.php",
+  "admin_book" => "admin/books/index.php",
+  "admin_user" => "admin/users/index.php",
+  "profile" => "profile.php",
+  "logout" => "logout.php"
+];
+require_once "includes/templates/header.php";
+require_once "includes/templates/nav.php";
+require_once "includes/env/db.php";
+
+if(isset($_GET['search'])){
+  $search = trim(filter_var($_GET['search'],FILTER_SANITIZE_STRING));
+}else{
+  header('Location: index.php');
+  exit();
+}
+
+$stmt = $con->prepare('SELECT * FROM `books` WHERE title LIKE :search  ORDER BY created_at DESC');
+$stmt->bindValue(":search","%$search%");
+var_dump($stmt->queryString);
+$stmt->execute();
+$books = $stmt->fetchAll(PDO::FETCH_OBJ);
+if(count($books) === 0){
+  header("Location: includes/templates/404.html");
+  exit();
+}
+?>
+<main class="b-container">
+  <div class="book-container">
+    <?php foreach ($books as $book): ?>
+    <div class="book">
+      <div>
+        <a href="singleBook.php?id=<?php echo $book->id?>" title="see detail"><i class="fa fa-arrow-right"></i></a>
+        <img src="<?php echo $book->thumbnail?>" alt="<?php echo $book->title?>">
+      </div>
+      <h3><?php echo $book->title?></h3>
+    </div>
+    <?php endforeach; ?>
+  </div>
+</main>
+<?php
+require_once "includes/templates/footer.php";
+?>

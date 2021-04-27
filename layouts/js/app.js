@@ -1,8 +1,13 @@
 const subNavButton = document.getElementById('sub-nav-button'),
      subNavMenu = document.getElementById('sub-nav-menu'),
     navButton = document.getElementById('nav-button'),
-    navMenu = document.getElementById('nav-menu');
+    navMenu = document.getElementById('nav-menu'),
+    modal = document.getElementById('modal');
 
+if(modal){
+    window.addEventListener('load',()=>modal.classList.add('open'));
+    modal.lastElementChild.addEventListener('click',()=>modal.remove());
+}
 if(navButton && navMenu){
     navButton.addEventListener('click',(e)=>{
         e.stopPropagation();

@@ -1,14 +1,25 @@
 <?php
 session_start();
-if(isset($_SESSION['logged'])){
-    header('Location: index.php');
+if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
+    header('Location: ../../login.php');
     exit();
 }
 
-$title = "Register";
-$loginBody = 'login-body flex';
-require_once "includes/templates/header.php";
-require_once "includes/env/db.php";
+$title = "Users Management";
+$css = "../../layouts/css";
+$js = "../../layouts/js";
+$navLinks = [
+    "home" => "../../index.php",
+    "loan" => "../../onloan.php",
+    "book" => "../../books.php",
+    "admin_book" => "../books/index.php",
+    "admin_user" => "index.php",
+    "profile" => "../../profile.php",
+    "logout" => "../../logout.php"
+];
+require_once "../../includes/templates/header.php";
+require_once "../../includes/templates/nav.php";
+require_once "../../includes/env/db.php";
 
 if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email'],$_POST['password'],$_POST['password_confirmation'])){
 
@@ -16,6 +27,12 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email'
     $email = trim(filter_var($_POST['email'],FILTER_SANITIZE_EMAIL));
     $password = trim(filter_var($_POST['password'],FILTER_SANITIZE_STRING));
     $password_confirmation = trim(filter_var($_POST['password_confirmation'],FILTER_SANITIZE_STRING));
+
+    $is_admin = 1;
+    if(isset($_POST['is_admin'])){
+        $is_admin = trim(filter_var($_POST['is_admin'],FILTER_SANITIZE_STRING));
+        $is_admin = $is_admin == "on" ? 0:1;
+    }
 
     if(strlen($name) < 4 || strlen($name) > 20){
         $err_name = "Name's length should be between 4 and 20 characters";
@@ -39,21 +56,17 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email'
         $stmt->execute();
         $count = $stmt->rowCount();
         if ($count === 0) {
-            $sql = "INSERT INTO `users`(`name`,email,password,is_admin,is_active) VALUES (:name,:email,:password,1,1)";
+            $sql = "INSERT INTO `users`(`name`,email,password,is_admin,is_active) VALUES (:name,:email,:password,:isAdmin,1)";
             $stmt = $con->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
             $password = sha1($password);
             $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':isAdmin',$is_admin);
             $stmt->execute();
             if($stmt->rowCount() === 0){
                 $err_create_user = "Error, we couldn't create the user";
             }else{
-                $_SESSION['logged'] = "user";
-                $_SESSION['email'] = $email;
-                $_SESSION['name'] = $name;
-                $_SESSION['is_admin'] = 1;
-                $_SESSION['is_active'] = 1;
                 header('Location: index.php');
                 exit();
             }
@@ -64,13 +77,8 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email'
 }
 ?>
 
-<div class="flex container form-auth">
+<div class="flex container form-auth admin-container">
     <div class="form-container">
-        <div class="text-center">
-            <h1>Library.<span>fr</span></h1>
-            <p>Hi thanks for joining us new reader, have a nice day!</p>
-        </div>
-
         <?php if(isset($err_create_user)): ?>
             <div class="form-error"><?php echo $err_create_user; ?></div>
         <?php endif; ?>
@@ -112,18 +120,23 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email'
                 <div class="form-error"><?php echo $err_password_confirmation; ?></div>
             <?php endif; ?>
 
-            <div class="flex">
-                <a href="login.php" class="auth-link">You already have an account ?</a>
-                <input type="submit" value="Register" class="cursor-pointer submit-input ">
-            </div>
-            
+           <div class="input-check">
+               <label for="is_admin">Is Admin :</label>
+               <input type="checkbox" name="is_admin" id="is_admin">
+           </div>
+            <?php if(isset($err_password_confirmation)): ?>
+                <div class="form-error"><?php echo $err_password_confirmation; ?></div>
+            <?php endif; ?>
+
+            <input type="submit" value="Create" class="cursor-pointer submit-input ">
         </form>
     </div>
     <div class="img-container">
-        <img src="layouts/images/book.png" alt="book">
+        <img src="../../layouts/images/book.png" alt="book">
     </div>
 </div>
 
 <?php
-require_once "includes/templates/footer.php";
+require_once "../../includes/templates/footer.php";
 ?>
+

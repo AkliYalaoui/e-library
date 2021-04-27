@@ -23,8 +23,11 @@
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         if($stmt->rowCount() > 0){
             $_SESSION['logged'] = "user";
+            $_SESSION['id'] = $user->id;
             $_SESSION['email'] = $user->email;
             $_SESSION['name'] = $user->name;
+            $_SESSION['is_admin'] = $user->is_admin;
+            $_SESSION['is_active'] = $user->is_active;
             header('Location: index.php');
             exit();
         }else{
