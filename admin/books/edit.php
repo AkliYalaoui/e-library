@@ -32,7 +32,7 @@ if(!$book){
   exit();
 }
 
-if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['author'],$_POST['isbn'],$_POST['publisher'],$_POST['pages'],$_POST['publication_date'],$_POST['loan_duration'],$_FILES['thumbnail'],$_POST['overview'])){
+if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['author'],$_POST['isbn'],$_POST['publisher'],$_POST['pages'],$_POST['publication_date'],$_POST['loan_duration'],$_POST['overview'],$_FILES['thumbnail'])){
 
     $title = trim(filter_var($_POST['title'],FILTER_SANITIZE_STRING));
     $title = str_replace("\\","",str_replace("/","",$title));
@@ -84,21 +84,32 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
             //validate the uploaded image
             $file_name = $book_cover['name'];
             $allowed_ext = ['png','jpg','jpeg','gif'];
-            $file_ext = strtolower(pathinfo($file_name,PATHINFO_EXTENSION));
+            if($file_ext != ""){
+              $file_ext = strtolower(pathinfo($file_name,PATHINFO_EXTENSION));
+            }else{
+              $file_ext = strtolower(pathinfo($book->thumbnail,PATHINFO_EXTENSION));
+            }
             $file_size = $book_cover['size'];
             $file_error = $book_cover['error'];
             $real_name = "../../data/books/".$title.".".$file_ext;
             $cover_link = "data/books/".$title.".".$file_ext;
             $tmp_name = $book_cover['tmp_name'];
-
-            if(!in_array($file_ext,$allowed_ext)){
-                $err_thumbnail = "Provide a valid book cover image : png , jpg, jpeg or gif";
-            }else if ($file_size > 2**22){
-                $err_thumbnail = "File size exceed maximum size which is 2MB";
-            }else if($file_error !== 0){
-                $err_thumbnail = "File upload failed";
-            }else if(!move_uploaded_file($tmp_name,$real_name)){
-                $err_thumbnail = "Ops, we couldn't finalize the process of uploading the file";
+            $path = "../../".$book->thumbnail;
+            if($file_name != ""){
+              if(file_exists($path) ){
+                unlink($path);
+              } 
+              if(!in_array($file_ext,$allowed_ext)){
+                  $err_thumbnail = "Provide a valid book cover image : png , jpg, jpeg or gif";
+              }else if ($file_size > 2**22){
+                  $err_thumbnail = "File size exceed maximum size which is 2MB";
+              }else if($file_error !== 0){
+                  $err_thumbnail = "File upload failed";
+              }else if(!move_uploaded_file($tmp_name,$real_name)){
+                  $err_thumbnail = "Ops, we couldn't finalize the process of uploading the file";
+              }
+            }else{
+              rename($path,$real_name);
             }
             if(!isset($err_thumbnail)){
                 $stmt = $con->prepare('UPDATE `books` SET title=:title,overview=:overview,author=:author,thumbnail=:thumbnail,loan_duration=:loan_duration,publication_date=:publication_date,pages=:pages,publisher=:publisher,isbn=:isbn WHERE id=:id');
@@ -115,7 +126,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
                 if(!$stmt->execute()){
                     $err_create_book = "Error, we couldn't create the book";
                 }else {
-                    header("Location: index.php");
+                    header("Location: index.php?file=$path");
                     exit();
                 }
             }
@@ -130,7 +141,8 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
     <?php if(isset($err_create_book)): ?>
     <div class="form-error"><?php echo $err_create_book; ?></div>
     <?php endif; ?>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])."?id=".$book->id ?>" method="post"
+      enctype="multipart/form-data">
 
       <label for="title" class="label">Title :</label>
       <div class="form-group">
@@ -219,7 +231,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
       <div class="form-error"><?php echo $err_pages; ?></div>
       <?php endif; ?>
 
-      <input type="submit" value="Add" class="cursor-pointer submit-input ">
+      <input type="submit" value="Update" class="cursor-pointer submit-input ">
     </form>
   </div>
   <div class="img-container">
