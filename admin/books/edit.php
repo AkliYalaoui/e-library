@@ -27,7 +27,6 @@ $sql = "SELECT * FROM `books` WHERE id = :id";
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $book = $stmt->fetch(PDO::FETCH_OBJ);
-        
 if(!$book){
   header('Location: index.php');
   exit();
