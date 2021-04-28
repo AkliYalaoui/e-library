@@ -19,6 +19,23 @@ require_once "includes/templates/header.php";
 require_once "includes/env/db.php";
 require_once "includes/templates/nav.php";
 
+$id = $_SESSION['id'];
+$sql = "SELECT * FROM `users` WHERE id = :id";
+        $stmt = $con->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
+if(!$user){
+  header('Location: logout.php');
+  exit();
+}else{
+  $_SESSION['logged'] = "user";
+  $_SESSION['id'] = $user->id;
+  $_SESSION['email'] = $user->email;
+  $_SESSION['name'] = $user->name;
+  $_SESSION['is_admin'] = $user->is_admin;
+  $_SESSION['is_active'] = $user->is_active;
+}
 $start_row = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page'] - 1)*10 : 0;
 
 $stmt = $con->prepare('SELECT * FROM `books` ORDER BY created_at DESC LIMIT :row,10');

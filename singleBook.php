@@ -19,6 +19,24 @@ require_once "includes/templates/header.php";
 require_once "includes/env/db.php";
 require_once "includes/templates/nav.php";
 
+$id = $_SESSION['id'];
+$sql = "SELECT * FROM `users` WHERE id = :id";
+        $stmt = $con->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
+if(!$user){
+  header('Location: logout.php');
+  exit();
+}else{
+    $_SESSION['logged'] = "user";
+    $_SESSION['id'] = $user->id;
+    $_SESSION['email'] = $user->email;
+    $_SESSION['name'] = $user->name;
+    $_SESSION['is_admin'] = $user->is_admin;
+    $_SESSION['is_active'] = $user->is_active;
+}
+
 $bookid = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : 0;
 
 $stmt = $con->prepare("SELECT * FROM `books` WHERE id=:bookid LIMIT 1");
@@ -34,15 +52,13 @@ $book = $stmt->fetch(PDO::FETCH_OBJ);
 
 <div class="book-parent">
   <div class="borrow-book">
-    <?php if($_SESSION['is_active'] == 0):  ?>
-    <?php 
+    <?php if($_SESSION['is_active'] == 0):  ?> <?php 
     $stmt = $con->prepare("SELECT * FROM `borrow` WHERE book_id=:book_id");
     $stmt->bindParam(':book_id', $bookid);
     $stmt->execute();
     $book_borrowed = $stmt->fetch(PDO::FETCH_OBJ);
     if($stmt->rowCount() === 0):
-  ?>
-    <form action="borrow.php" method="post">
+  ?> <form action="borrow.php" method="post">
       <input type="hidden" value="<?php echo $book->id?>" name="id">
       <input type="hidden" value="<?php echo $book->loan_duration?>" name="loan_duration">
       <input type="submit" value="Emprunter ce livre" name="borrow">
