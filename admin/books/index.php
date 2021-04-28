@@ -63,7 +63,7 @@ $books = $stmt->fetchAll(PDO::FETCH_OBJ);
           <td><?php echo $book->author ?></td>
           <td><?php echo $book->isbn ?></td>
           <td><?php echo $book->publisher ?></td>
-          <td><?php echo $book->publication_date ?></td>
+          <td><?php echo date("Y-m-d",strtotime($book->publication_date)) ?></td>
           <td><?php echo $book->pages ?></td>
           <td><?php echo $book->loan_duration ?></td>
           <td>
