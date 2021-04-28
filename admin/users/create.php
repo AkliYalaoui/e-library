@@ -18,8 +18,8 @@ $navLinks = [
   "logout" => "../../logout.php"
 ];
 require_once "../../includes/templates/header.php";
-require_once "../../includes/templates/nav.php";
 require_once "../../includes/env/db.php";
+require_once "../../includes/templates/nav.php";
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'])) {
 

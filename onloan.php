@@ -16,8 +16,8 @@ $navLinks = [
     "logout" => "logout.php"
 ];
 require_once "includes/templates/header.php";
-require_once "includes/templates/nav.php";
 require_once "includes/env/db.php";
+require_once "includes/templates/nav.php";
 
 $start_row = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page'] - 1)*10 : 0;
 

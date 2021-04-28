@@ -17,8 +17,8 @@ $navLinks = [
   "logout" => "logout.php"
 ];
 require_once "includes/templates/header.php";
-require_once "includes/templates/nav.php";
 require_once "includes/env/db.php";
+require_once "includes/templates/nav.php";
 
 if(isset($_GET['search'])){
   $search = trim(filter_var($_GET['search'],FILTER_SANITIZE_STRING));

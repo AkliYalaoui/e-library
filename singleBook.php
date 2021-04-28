@@ -16,8 +16,8 @@ $navLinks = [
   "logout" => "logout.php"
 ];
 require_once "includes/templates/header.php";
-require_once "includes/templates/nav.php";
 require_once "includes/env/db.php";
+require_once "includes/templates/nav.php";
 
 $bookid = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -35,7 +35,7 @@ $book = $stmt->fetch(PDO::FETCH_OBJ);
 <div class="book-parent">
   <div class="borrow-book">
     <?php 
-    $stmt = $con->prepare("SELECT * FROM `borrow` WHERE book_id=:book_id LIMIT 1");
+    $stmt = $con->prepare("SELECT * FROM `borrow` WHERE book_id=:book_id");
     $stmt->bindParam(':book_id', $bookid);
     $stmt->execute();
     $book_borrowed = $stmt->fetch(PDO::FETCH_OBJ);

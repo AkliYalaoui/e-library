@@ -18,8 +18,8 @@ $navLinks = [
     "logout" => "../../logout.php"
 ];
 require_once "../../includes/templates/header.php";
-require_once "../../includes/templates/nav.php";
 require_once "../../includes/env/db.php";
+require_once "../../includes/templates/nav.php";
 
 if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['author'],$_POST['isbn'],$_POST['publisher'],$_POST['pages'],$_POST['publication_date'],$_POST['loan_duration'],$_FILES['thumbnail'],$_POST['overview'])){
 

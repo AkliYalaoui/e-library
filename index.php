@@ -17,6 +17,7 @@ $navLinks = [
   "logout" => "logout.php"
 ];
 require_once "includes/templates/header.php";
+require_once "includes/env/db.php";
 require_once "includes/templates/nav.php";
 ?>
 <div class="overlay">

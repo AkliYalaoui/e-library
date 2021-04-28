@@ -18,8 +18,8 @@ $navLinks = [
     "logout" => "../../logout.php"
 ];
 require_once "../../includes/templates/header.php";
-require_once "../../includes/templates/nav.php";
 require_once "../../includes/env/db.php";
+require_once "../../includes/templates/nav.php";
 
 $id = isset($_GET['id']) && is_numeric($_GET['id'])  ? intval($_GET['id']):0;
 $sql = "SELECT * FROM `users` WHERE id = :id";
