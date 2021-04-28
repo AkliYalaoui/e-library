@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['logged'])){
+if(!isset($_SESSION['logged']) || $_SESSION['is_active'] == 1){
     header('Location: login.php');
     exit();
 }

@@ -34,6 +34,7 @@ $book = $stmt->fetch(PDO::FETCH_OBJ);
 
 <div class="book-parent">
   <div class="borrow-book">
+    <?php if($_SESSION['is_active'] == 0):  ?>
     <?php 
     $stmt = $con->prepare("SELECT * FROM `borrow` WHERE book_id=:book_id");
     $stmt->bindParam(':book_id', $bookid);
@@ -54,8 +55,9 @@ $book = $stmt->fetch(PDO::FETCH_OBJ);
     </form>
     <?php else: ?>
     <div class="form-error">Ce livre est indisponible à l'emprunt</div>
-    <?php endif; ?>
-    <h3 class="book-title"><?php echo $book->title ?></h3>
+    <?php endif;endif; ?>
+    <h3 class="book-title"><?php echo $book->title ?>
+    </h3>
   </div>
   <div class="book-info">
     <div class="book-thumbnail">

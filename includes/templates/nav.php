@@ -45,7 +45,7 @@
 </div>
 <?php else: ?>
 <?php 
-    $stmt = $con->prepare("SELECT count(*) AS count FROM `borrow` WHERE user_id=:user_id AND expires_at >= CURRENT_TIMESTAMP");
+    $stmt = $con->prepare("SELECT count(*) AS count FROM `borrow` WHERE user_id=:user_id AND expires_at <= CURRENT_TIMESTAMP");
     $stmt->bindParam(':user_id', $_SESSION["id"]);
     $stmt->execute();
     $count = $stmt->fetch(PDO::FETCH_OBJ)->count;
