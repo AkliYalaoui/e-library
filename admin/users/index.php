@@ -2,9 +2,9 @@
 require_once "../../includes/templates/init_user.php";
 
 if(isset($_GET['filter']) && filter_var($_GET['filter'],FILTER_SANITIZE_STRING) === "approve" ){
-  $users = get_all_users();
-}else{
   $users = get_filtred_users();
+}else{
+  $users = get_all_users();
 }
 
 ?>

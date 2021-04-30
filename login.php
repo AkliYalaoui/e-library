@@ -40,13 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['email'], $_POST['pass
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
       <label for="email" class="label">Email :</label>
       <div class="form-group">
-        <input type="email" class="input" name="email" id="email" placeholder="exemple: foo@bar.com"
+        <input type="email" required class="input" name="email" id="email" placeholder="exemple: foo@bar.com"
           value="<?php echo $_POST['email'] ?? ''?>">
         <i class="fa fa-envelope"></i>
       </div>
       <label for="password" class="label">mot de passe :</label>
       <div class="form-group">
-        <input type="password" class="input" name="password" id="password">
+        <input type="password" required class="input" name="password" id="password">
         <i class="fa fa-key"></i>
       </div>
       <div class="flex">

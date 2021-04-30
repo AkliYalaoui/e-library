@@ -113,14 +113,13 @@ function user_login($email,$password){
 }
 function user_exists($email,$name,$id=0){
   
-    global $con,$user;
+    global $con;
     $sql = "SELECT * FROM `users` WHERE id != :id AND (email = :email OR `name` = :name)";
     $stmt = $con->prepare($sql);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_OBJ);
     return $stmt->rowCount() > 0 ? true : false;
 }
 function sanitize_string($str){

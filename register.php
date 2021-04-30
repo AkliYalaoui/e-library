@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
 
       <label for="name" class="label">Nom :</label>
       <div class="form-group">
-        <input type="text" class="input" name="name" id="name"
+        <input type="text" class="input" name="name" id="name" required
           placeholder="La longueur de ce champs doit etre comprise entre 4 and 20 charactères"
           value="<?php echo $_POST['name'] ?? '' ?>">
         <i class="fa fa-user"></i>
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
 
       <label for="email" class="label">Email :</label>
       <div class="form-group">
-        <input type="email" class="input" name="email" id="email" placeholder="exemple: foo@bar.com"
+        <input type="email" class="input" name="email" id="email" placeholder="exemple: foo@bar.com" required
           value="<?php echo $_POST['email'] ?? '' ?>">
         <i class="fa fa-envelope"></i>
       </div>
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
 
       <label for="password" class="label">Mot de passe :</label>
       <div class="form-group">
-        <input type="password" class="input" name="password" id="password"
+        <input type="password" class="input" name="password" id="password" required
           placeholder="mot de passe fort entre 6 and 255 charactères">
         <i class="fa fa-key"></i>
       </div>
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
 
       <label for="password_confirmation" class="label">Confirmer le mot de passe :</label>
       <div class="form-group">
-        <input type="password" class="input" name="password_confirmation" id="password_confirmation"
+        <input type="password" class="input" name="password_confirmation" id="password_confirmation" required
           placeholder="mot de passe fort entre 6 and 255 charactères">
         <i class="fa fa-key"></i>
       </div>

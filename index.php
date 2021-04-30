@@ -9,7 +9,8 @@ require_once "includes/templates/init_base.php";
   <form action="searchResult.php" method="get" class="form-search">
     <div class="search-bar">
       <!-- <label for="searchBook" class="label">Search Book :</label>-->
-      <input type="search" class="input" id="searchBook" name="search" placeholder="exemple : le fils du pauvre">
+      <input type="search" required class="input" id="searchBook" name="search"
+        placeholder="exemple : le fils du pauvre">
     </div>
     <input type="submit" value="Rechercher" class="submit-input cursor-pointer">
   </form>

@@ -102,7 +102,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="title" class="label">Titre :</label>
       <div class="form-group">
-        <input type="text" class="input" name="title" id="title"
+        <input type="text" required class="input" name="title" id="title"
           placeholder="La longueur de ce champs doit etre comprise entre 4 and 255 charactères"
           value="<?php echo $_POST['title'] ?? ''?>">
         <i class="fa fa-book"></i>
@@ -113,7 +113,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="overview" class="label">Resumé :</label>
       <div class="form-group">
-        <textarea class="input text-input" name="overview"
+        <textarea class="input text-input" required name="overview"
           id="overview"><?php echo $_POST['overview'] ?? ''?></textarea>
         <i class="fa fa-paragraph"></i>
       </div>
@@ -123,7 +123,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="thumbnail" class="label">Image de couverture :</label>
       <div class="form-group">
-        <input type="file" class="input" name="thumbnail" id="thumbnail">
+        <input type="file" required class="input" name="thumbnail" id="thumbnail">
         <i class="fa fa-image"></i>
       </div>
       <?php if(isset($err_thumbnail)): ?>
@@ -132,7 +132,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="author" class="label">Auteur :</label>
       <div class="form-group">
-        <input type="text" class="input" name="author" id="author"
+        <input type="text" required class="input" name="author" id="author"
           placeholder="La longueur de ce champs doit etre comprise entre 4 and 255 charactères"
           value="<?php echo $_POST['author'] ?? ''?>">
         <i class="fa fa-user"></i>
@@ -143,7 +143,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="publisher" class="label">Edition :</label>
       <div class="form-group">
-        <input type="text" class="input" name="publisher" id="publisher"
+        <input type="text" required class="input" name="publisher" id="publisher"
           placeholder="La longueur de ce champs doit etre comprise entre 4 and 255 charactères"
           value="<?php echo $_POST['publisher'] ?? ''?>">
         <i class="fa fa-newspaper"></i>
@@ -154,7 +154,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="publication_date" class="label">Date De Publication :</label>
       <div class="form-group">
-        <input type="date" class="input" name="publication_date" id="publication_date"
+        <input type="date" required class="input" name="publication_date" id="publication_date"
           value="<?php echo $_POST['publication_date'] ?? ''?>">
         <i class="fa fa-calendar"></i>
       </div>
@@ -164,7 +164,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="isbn" class="label">Isbn :</label>
       <div class="form-group">
-        <input type="number" class="input" name="isbn" id="isbn" value="<?php echo $_POST['isbn'] ?? ''?>">
+        <input type="number" required class="input" name="isbn" id="isbn" value="<?php echo $_POST['isbn'] ?? ''?>">
         <i class="fa fa-id-card"></i>
       </div>
       <?php if(isset($err_isbn)): ?>
@@ -173,7 +173,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
 
       <label for="loan_duration" class="label">Dureé d'emprunt :</label>
       <div class="form-group">
-        <input type="number" class="input" name="loan_duration" id="loan_duration"
+        <input type="number" required class="input" name="loan_duration" id="loan_duration"
           value="<?php echo $_POST['loan_duration'] ?? ''?>">
         <i class="fa fa-id-card"></i>
       </div>
@@ -182,7 +182,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['autho
       <?php endif; ?>
       <label for="pages" class="label">Pages :</label>
       <div class="form-group">
-        <input type="number" class="input" name="pages" id="pages" value="<?php echo $_POST['pages'] ?? ''?>">
+        <input type="number" requiredclass="input" name="pages" id="pages" value="<?php echo $_POST['pages'] ?? ''?>">
         <i class="fa fa-id-card"></i>
       </div>
       <?php if(isset($err_pages)): ?>

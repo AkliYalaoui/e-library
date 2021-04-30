@@ -31,7 +31,6 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
     }
     
     if(!isset($err_name) && !isset($err_email) && !isset($err_password) && !isset($err_password_confirmation) ) {
-
         if (!user_exists($name,$email,$user->id)) {
             if(!update_user($user,$name,$email,$password)){
                 $err_create_user = "Erreur, nous n'avons pas pu modifier votre profile";
@@ -56,7 +55,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
 
       <label for="name" class="label">Nom :</label>
       <div class="form-group">
-        <input type="text" class="input" name="name" id="name"
+        <input type="text" class="input" name="name" id="name" required
           placeholder="La longueur de ce champs doit etre comprise entre 4 and 20 charactères""
           value=" <?php echo $_POST['name'] ?? $user->name?>">
         <i class="fa fa-user"></i>
@@ -67,7 +66,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
 
       <label for="email" class="label">Email :</label>
       <div class="form-group">
-        <input type="email" class="input" name="email" id="email" placeholder="example: foo@bar.com"
+        <input type="email" required class="input" name="email" id="email" placeholder="example: foo@bar.com"
           value="<?php echo $_POST['email'] ?? $user->email?>">
         <i class="fa fa-envelope"></i>
       </div>
