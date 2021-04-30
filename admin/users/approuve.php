@@ -7,6 +7,8 @@ exit();
 }
 
 require_once "../../includes/env/db.php";
+require_once "../../includes/functions/fn.php";
+check_user_state();
 
 if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['approve'],$_POST['id'])){
     $id = filter_var($_POST['id'],FILTER_SANITIZE_NUMBER_INT);

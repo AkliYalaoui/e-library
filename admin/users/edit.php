@@ -5,7 +5,7 @@ if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
     exit();
 }
 
-$title = "Users Management";
+$title = "Modifer un utilisateur";
 $css = "../../layouts/css";
 $js = "../../layouts/js";
 $navLinks = [
@@ -20,6 +20,8 @@ $navLinks = [
 require_once "../../includes/templates/header.php";
 require_once "../../includes/env/db.php";
 require_once "../../includes/templates/nav.php";
+require_once "../../includes/functions/fn.php";
+check_user_state();
 
 $id = isset($_GET['id']) && is_numeric($_GET['id'])  ? intval($_GET['id']):0;
 $sql = "SELECT * FROM `users` WHERE id = :id";
@@ -29,7 +31,7 @@ $sql = "SELECT * FROM `users` WHERE id = :id";
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         
 if(!$user){
-  header('Location: index.php');
+  header('Location: ../../404.php');
   exit();
 }
 
@@ -47,16 +49,16 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
     }
 
     if(strlen($name) < 4 || strlen($name) > 20){
-        $err_name = "Name's length should be between 4 and 20 characters";
+        $err_name = "La longueur de ce champs doit etre comprise entre 4 and 20 charactères";
     }
     if(filter_var($email,FILTER_VALIDATE_EMAIL) === false){
-        $err_email = "Please provide a valid email";
+        $err_email = "Veuillez saisir une adresse email correcte";
     }
     if(strlen($password) < 6 || strlen($password) > 255){
-        $err_password = "Password's length should be between 6 and  255 characters";
+        $err_password = "La longueur de ce champs doit etre comprise entre 6 and 255 charactères";
     }
     if($password !== $password_confirmation){
-        $err_password_confirmation = "Password mismatch,Verify your password again";
+        $err_password_confirmation = "Verifier votre mot de passe une autre fois";
     }
 
     if(strlen($password) === 0 && strlen($password_confirmation) === 0){
@@ -85,13 +87,13 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
             $stmt->bindParam(':isAdmin',$is_admin);
             $stmt->execute();
             if(!$stmt->execute()){
-                $err_create_user = "Error, we couldn't update the user";
+                $err_create_user = "Erreur, nous n'avons pas pu modifier cet utilisateur";
             }else{
                 header('Location: index.php');
                 exit();
             }
         }else{
-            $err_create_user = "username or email already been created.Choose another email or password";
+            $err_create_user = "nom ou email existe déja. Choisir un autre nom ou email";
         }
     }
 }
@@ -104,9 +106,10 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
     <?php endif; ?>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])."?id=".$user->id ?>" method="post">
 
-      <label for="name" class="label">Name :</label>
+      <label for="name" class="label">Nom :</label>
       <div class="form-group">
-        <input type="text" class="input" name="name" id="name" placeholder="name's length between 4 and 20 char"
+        <input type="text" class="input" name="name" id="name"
+          placeholder="La longueur de ce champs doit etre comprise entre 4 and 20 charactères"
           value="<?php echo $_POST['name'] ?? $user->name?>">
         <i class="fa fa-user"></i>
       </div>
@@ -116,7 +119,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
 
       <label for="email" class="label">Email :</label>
       <div class="form-group">
-        <input type="email" class="input" name="email" id="email" placeholder="example: foo@bar.com"
+        <input type="email" class="input" name="email" id="email" placeholder="exemple: foo@bar.com"
           value="<?php echo $_POST['email'] ?? $user->email?>">
         <i class="fa fa-envelope"></i>
       </div>
@@ -124,20 +127,20 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
       <div class="form-error"><?php echo $err_email; ?></div>
       <?php endif; ?>
 
-      <label for="password" class="label">Password :</label>
+      <label for="password" class="label">Mot de passe :</label>
       <div class="form-group">
         <input type="password" class="input" name="password" id="password"
-          placeholder="Leave it empty if you don't want to update it">
+          placeholder="Laisser ce champ vide si vous ne souhaitez pas changer votre mot de passe">
         <i class="fa fa-key"></i>
       </div>
       <?php if(isset($err_password)): ?>
       <div class="form-error"><?php echo $err_password; ?></div>
       <?php endif; ?>
 
-      <label for="password_confirmation" class="label">Password Confirmation :</label>
+      <label for="password_confirmation" class="label">Confirmer le mot de passe :</label>
       <div class="form-group">
         <input type="password" class="input" name="password_confirmation" id="password_confirmation"
-          placeholder="Leave it empty if you don't want to update it">
+          placeholder="Laisser ce champ vide si vous ne souhaitez pas changer votre mot de passe">
         <i class="fa fa-key"></i>
       </div>
       <?php if(isset($err_password_confirmation)): ?>
@@ -145,11 +148,11 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
       <?php endif; ?>
 
       <div class="input-check">
-        <label for="is_admin">Is Admin :</label>
+        <label for="is_admin">Est Admin :</label>
         <input type="checkbox" name="is_admin" id="is_admin" <?php if($user->is_admin == 0):?> checked<?php endif; ?>>
       </div>
 
-      <input type="submit" value="Update" class="cursor-pointer submit-input ">
+      <input type="submit" value="Modifier" class="cursor-pointer submit-input ">
     </form>
   </div>
   <div class="img-container">

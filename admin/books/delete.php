@@ -6,6 +6,8 @@ if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
 }
 
 require_once "../../includes/env/db.php";
+require_once "../../includes/functions/fn.php";
+check_user_state();
 
 if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['thumbnail'])){
   $thumbnail = filter_var($_POST['thumbnail'],FILTER_SANITIZE_STRING);

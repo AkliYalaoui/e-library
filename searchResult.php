@@ -5,7 +5,7 @@ if (!isset($_SESSION['logged'])) {
   exit();
 }
 
-$title = "Home";
+$title = "Resultats de recherche";
 $homeBody = "home-body";
 $navLinks = [
   "home" => "index.php",

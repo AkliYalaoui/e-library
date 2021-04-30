@@ -5,7 +5,7 @@ if (!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0) {
   exit();
 }
 
-$title = "Users Management";
+$title = "Créer un utilisateur";
 $css = "../../layouts/css";
 $js = "../../layouts/js";
 $navLinks = [
@@ -20,6 +20,8 @@ $navLinks = [
 require_once "../../includes/templates/header.php";
 require_once "../../includes/env/db.php";
 require_once "../../includes/templates/nav.php";
+require_once "../../includes/functions/fn.php";
+check_user_state();
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'])) {
 
@@ -31,20 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
   $is_admin = 1;
   if (isset($_POST['is_admin'])) {
     $is_admin = trim(filter_var($_POST['is_admin'], FILTER_SANITIZE_STRING));
-    $is_admin = $is_admin == "on" ? 0 : 1;
+    $is_admin =  $is_admin == "on" ? 0 : 1;
   }
 
   if (strlen($name) < 4 || strlen($name) > 20) {
-    $err_name = "Name's length should be between 4 and 20 characters";
+    $err_name = "La longueur de ce champs doit etre comprise entre 4 and 20 charactères";
   }
   if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-    $err_email = "Please provide a valid email";
+    $err_email = "Veuillez saisir une adresse email correcte";
   }
   if (strlen($password) < 6 || strlen($password) > 255) {
-    $err_password = "Password's length should be between 6 and  255 characters";
+    $err_password = "La longueur de ce champs doit etre comprise entre 6 and 255 charactères";
   }
   if ($password !== $password_confirmation) {
-    $err_password_confirmation = "Password mismatch,Verify your password again";
+    $err_password_confirmation = "Verifier votre mot de passe une autre fois";
   }
 
   if (!isset($err_name) && !isset($err_email) && !isset($err_password) && !isset($err_password_confirmation)) {
@@ -56,22 +58,23 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
     $stmt->execute();
     $count = $stmt->rowCount();
     if ($count === 0) {
-      $sql = "INSERT INTO `users`(`name`,email,password,is_admin,is_active) VALUES (:name,:email,:password,:isAdmin,1)";
+      $sql = "INSERT INTO `users`(`name`,email,password,is_admin,is_active) VALUES (:name,:email,:password,:isAdmin,:isActive)";
       $stmt = $con->prepare($sql);
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':email', $email);
       $password = sha1($password);
       $stmt->bindParam(':password', $password);
       $stmt->bindParam(':isAdmin', $is_admin);
+      $stmt->bindParam(':isActive', $is_admin);
       $stmt->execute();
       if ($stmt->rowCount() === 0) {
-        $err_create_user = "Error, we couldn't create the user";
+        $err_create_user = "Erreur, nous n'avons pas pu créer cet utilisateur";
       } else {
         header('Location: index.php');
         exit();
       }
     } else {
-      $err_create_user = "username or email already been created.Choose another email or password";
+      $err_create_user = "nom ou email existe déja. Choisir un autre nom ou email";
     }
   }
 }
@@ -84,9 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
     <?php endif; ?>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
 
-      <label for="name" class="label">Name :</label>
+      <label for="name" class="label">Nom :</label>
       <div class="form-group">
-        <input type="text" class="input" name="name" id="name" placeholder="name's length between 4 and 20 char"
+        <input type="text" class="input" name="name" id="name"
+          placeholder="La longueur de ce champs doit etre comprise entre 4 and 20 charactères"
           value="<?php echo $_POST['name'] ?? '' ?>">
         <i class="fa fa-user"></i>
       </div>
@@ -96,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
 
       <label for="email" class="label">Email :</label>
       <div class="form-group">
-        <input type="email" class="input" name="email" id="email" placeholder="example: foo@bar.com"
+        <input type="email" class="input" name="email" id="email" placeholder="exemple: foo@bar.com"
           value="<?php echo $_POST['email'] ?? '' ?>">
         <i class="fa fa-envelope"></i>
       </div>
@@ -104,20 +108,20 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
       <div class="form-error"><?php echo $err_email; ?></div>
       <?php endif; ?>
 
-      <label for="password" class="label">Password :</label>
+      <label for="password" class="label">Mot de passe :</label>
       <div class="form-group">
         <input type="password" class="input" name="password" id="password"
-          placeholder="strong password between 6 and 255 char">
+          placeholder="mot de passe fort entre 6 and 255 charactères">
         <i class="fa fa-key"></i>
       </div>
       <?php if (isset($err_password)) : ?>
       <div class="form-error"><?php echo $err_password; ?></div>
       <?php endif; ?>
 
-      <label for="password_confirmation" class="label">Password Confirmation :</label>
+      <label for="password_confirmation" class="label">Confirmer le mot de passe :</label>
       <div class="form-group">
         <input type="password" class="input" name="password_confirmation" id="password_confirmation"
-          placeholder="strong password between 6 and 255 char">
+          placeholder="mot de passe fort entre 6 and 255 charactères">
         <i class="fa fa-key"></i>
       </div>
       <?php if (isset($err_password_confirmation)) : ?>
@@ -125,11 +129,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
       <?php endif; ?>
 
       <div class="input-check">
-        <label for="is_admin">Is Admin :</label>
+        <label for="is_admin">Est Admin :</label>
         <input type="checkbox" name="is_admin" id="is_admin">
       </div>
 
-      <input type="submit" value="Create" class="cursor-pointer submit-input ">
+      <input type="submit" value="Créer" class="cursor-pointer submit-input ">
     </form>
   </div>
   <div class="img-container">

@@ -5,7 +5,7 @@ if (!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0) {
   exit();
 }
 
-$title = "Books Management";
+$title = "Gestion dev livres";
 $css = "../../layouts/css";
 $js = "../../layouts/js";
 $navLinks = [
@@ -20,25 +20,27 @@ $navLinks = [
 require_once "../../includes/templates/header.php";
 require_once "../../includes/env/db.php";
 require_once "../../includes/templates/nav.php";
+require_once "../../includes/functions/fn.php";
+check_user_state();
 
 $stmt = $con->prepare('SELECT * FROM `books` ORDER BY created_at DESC');
 $stmt->execute();
 $books = $stmt->fetchAll(PDO::FETCH_OBJ);
 ?>
 <div class="t-container">
-  <a href="create.php">New book<i class="fa fa-plus"></i></a>
+  <a href="create.php">Nouveau livre<i class="fa fa-plus"></i></a>
   <div class="table-container">
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>TITLE</th>
-          <th>AUTHOR</th>
+          <th>TITRE</th>
+          <th>AUTEUR</th>
           <th>ISBN</th>
-          <th>PUBLISHER</th>
-          <th>PUBLICATION_DATE</th>
+          <th>EDITION</th>
+          <th>DATE DE PUBLICATION</th>
           <th>PAGES</th>
-          <th>LOAN_DURATION</th>
+          <th>DUREÉ D'EMPRUNT</th>
           <th>ACTIONS</th>
         </tr>
       </thead>
@@ -67,11 +69,11 @@ $books = $stmt->fetchAll(PDO::FETCH_OBJ);
           <td><?php echo $book->pages ?></td>
           <td><?php echo $book->loan_duration ?></td>
           <td>
-            <a href="../../singleBook.php?id=<?php echo $book->id ?>" class="approve">view</a>
-            <a href="edit.php?id=<?php echo $book->id ?>" class="edit">edit</a>
+            <a href="../../singleBook.php?id=<?php echo $book->id ?>" class="approve">voir</a>
+            <a href="edit.php?id=<?php echo $book->id ?>" class="edit">modifier</a>
             <form action="delete.php" method="post">
               <input type="hidden" value="<?php echo $book->thumbnail ?>" name="thumbnail">
-              <input type="submit" value="delete" class="danger" name="delete">
+              <input type="submit" value="supprimer" class="danger" name="delete">
             </form>
           </td>
         </tr>

@@ -5,7 +5,7 @@ if (!isset($_SESSION['logged'])) {
   exit();
 }
 
-$title = "Books ";
+$title = "livre";
 $navLinks = [
   "home" => "index.php",
   "loan" => "onloan.php",
@@ -44,7 +44,7 @@ $stmt->bindParam(':bookid', $bookid);
 $stmt->execute();
 $book = $stmt->fetch(PDO::FETCH_OBJ);
   if(!$book){
-    header("Location: includes/templates/404.html");
+    header("Location: 404.php");
     exit();
   }
   
@@ -58,7 +58,8 @@ $book = $stmt->fetch(PDO::FETCH_OBJ);
     $stmt->execute();
     $book_borrowed = $stmt->fetch(PDO::FETCH_OBJ);
     if($stmt->rowCount() === 0):
-  ?> <form action="borrow.php" method="post">
+  ?>
+    <form action="borrow.php" method="post">
       <input type="hidden" value="<?php echo $book->id?>" name="id">
       <input type="hidden" value="<?php echo $book->loan_duration?>" name="loan_duration">
       <input type="submit" value="Emprunter ce livre" name="borrow">
@@ -80,20 +81,20 @@ $book = $stmt->fetch(PDO::FETCH_OBJ);
       <img src="<?php echo $book->thumbnail ?>" alt="book thumbnail">
     </div>
     <dl>
-      <dt>Author</dt>
+      <dt>Auteur</dt>
       <dd><?php echo $book->author ?></dd>
-      <dt>Publisher</dt>
+      <dt>Edition</dt>
       <dd><?php echo $book->publisher ?></dd>
       <dt>Pages</dt>
       <dd><?php echo $book->pages ?></dd>
       <dt>Isbn</dt>
       <dd><?php echo $book->isbn ?></dd>
-      <dt>Publication date</dt>
+      <dt>Date de Publication</dt>
       <dd>
         <time
           datetime="<?php echo $book->publication_date ?>"><?php echo (new DateTime($book->publication_date))->format("Y-m-d") ?></time>
       </dd>
-      <dt>Loan Duration</dt>
+      <dt>Durée d'emprunt</dt>
       <dd><?php echo $book->loan_duration ?></dd>
     </dl>
   </div>

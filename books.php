@@ -5,7 +5,7 @@ if(!isset($_SESSION['logged'])){
     exit();
 }
 
-$title = "Books ";
+$title = "Livres";
 $navLinks = [
     "home" => "index.php",
     "loan" => "onloan.php",
@@ -51,7 +51,12 @@ $count = $con->query("SELECT count(id) FROM `books`")->rowCount();
     <ul>
       <?php for ($i = 0; $i <= ($count/10);$i++): ?>
       <li>
+        <?php if(isset($_GET['page']) && $_GET['page'] == $i+1 ): ?>
+        <a href="?page=<?php echo $i+1 ?>"
+          style="background-color: var(--main-color);color:#fff;"><?php echo $i+1 ?></a>
+        <?php else: ?>
         <a href="?page=<?php echo $i+1 ?>"><?php echo $i+1 ?></a>
+        <?php endif; ?>
       </li>
       <?php endfor; ?>
     </ul>
@@ -60,7 +65,7 @@ $count = $con->query("SELECT count(id) FROM `books`")->rowCount();
     <?php foreach ($books as $book): ?>
     <div class="book">
       <div>
-        <a href="singleBook.php?id=<?php echo $book->id?>" title="see detail"><i class="fa fa-arrow-right"></i></a>
+        <a href="singleBook.php?id=<?php echo $book->id?>" title="voir detail"><i class="fa fa-arrow-right"></i></a>
         <img src="<?php echo $book->thumbnail?>" alt="<?php echo $book->title?>">
       </div>
       <h3><?php echo $book->title?></h3>

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['email'], $_POST['pass
     header('Location: index.php');
     exit();
   } else {
-    $err_login = "Invalid Credentials, please try again";
+    $err_login = "Données invalides, essayez une autre fois";
   }
 }
 ?>
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['email'], $_POST['pass
   <div class="form-container">
     <div class="text-center">
       <h1>Library.<span>fr</span></h1>
-      <p>Welcome again dear reader, have a nice day!</p>
+      <p>Bienvenue une autre fois cher lecteur, passez une bonne journée!</p>
     </div>
     <?php if (isset($err_login)) : ?>
     <div class="form-error"><?php echo $err_login; ?></div>
@@ -51,17 +51,17 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['email'], $_POST['pass
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
       <label for="email" class="label">Email :</label>
       <div class="form-group">
-        <input type="email" class="input" name="email" id="email" placeholder="example: foo@bar.com"
+        <input type="email" class="input" name="email" id="email" placeholder="exemple: foo@bar.com"
           value="<?php echo $_POST['email'] ?? ''?>">
         <i class="fa fa-envelope"></i>
       </div>
-      <label for="password" class="label">Password :</label>
+      <label for="password" class="label">mot de passe :</label>
       <div class="form-group">
         <input type="password" class="input" name="password" id="password">
         <i class="fa fa-key"></i>
       </div>
       <div class="flex">
-        <a href="register.php" class="auth-link">You don't have an account ?</a>
+        <a href="register.php" class="auth-link">Vous n'avez pas un compte ?</a>
         <input type="submit" value="Login" class="cursor-pointer submit-input ">
       </div>
     </form>

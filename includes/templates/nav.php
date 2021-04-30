@@ -6,22 +6,22 @@
     </div>
     <ul class="nav-links" id="nav-menu">
       <li>
-        <a href="<?php echo $navLinks['home'] ?>">Home<i class="fa fa-home"></i></a>
+        <a href="<?php echo $navLinks['home'] ?>">Acceuil<i class="fa fa-home"></i></a>
       </li>
       <?php if ($_SESSION['is_active'] == 0) : ?>
       <li>
-        <a href="<?php echo $navLinks['loan'] ?>">on loan<i class="fa fa-book-dead"></i></a>
+        <a href="<?php echo $navLinks['loan'] ?>">Mes Livres<i class="fa fa-book-dead"></i></a>
       </li>
       <?php endif; ?>
       <li>
-        <a href="<?php echo $navLinks['book'] ?>">all books<i class="fa fa-book-reader"></i></a>
+        <a href="<?php echo $navLinks['book'] ?>">Livres<i class="fa fa-book-reader"></i></a>
       </li>
       <?php if ($_SESSION['is_admin'] == 0) : ?>
       <li>
-        <a href="<?php echo $navLinks['admin_book'] ?>">Books management<i class="fa fa-book"></i></a>
+        <a href="<?php echo $navLinks['admin_book'] ?>">Gestion des livres<i class="fa fa-book"></i></a>
       </li>
       <li>
-        <a href="<?php echo $navLinks['admin_user'] ?>">Users management<i class="fa fa-user-friends"></i></a>
+        <a href="<?php echo $navLinks['admin_user'] ?>">Gestion des utilisateurs<i class="fa fa-user-friends"></i></a>
       </li>
       <?php endif; ?>
       <li class="sub-nav">
@@ -40,7 +40,7 @@
   <div>
     <i class="fa fa-bell fa-5x"></i>
   </div>
-  <p>Your account is waiting for admin approval</p>
+  <p>Veuillez attendre l'activation de votre compte par l'admin</p>
   <button id="closeModal">Got it!</button>
 </div>
 <?php else: ?>
