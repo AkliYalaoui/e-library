@@ -1,28 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0) {
-  header('Location: ../../login.php');
-  exit();
-}
 
-$title = "Créer un utilisateur";
-$css = "../../layouts/css";
-$js = "../../layouts/js";
-$navLinks = [
-  "home" => "../../index.php",
-  "loan" => "../../onloan.php",
-  "book" => "../../books.php",
-  "admin_book" => "../books/index.php",
-  "admin_user" => "index.php",
-  "profile" => "../../profile.php",
-  "logout" => "../../logout.php"
-];
-$pageName = $navLinks["admin_user"];
-require_once "../../includes/templates/header.php";
-require_once "../../includes/env/db.php";
-require_once "../../includes/templates/nav.php";
-require_once "../../includes/functions/fn.php";
-check_user_state();
+require_once "../../includes/templates/init_user.php";
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'])) {
 

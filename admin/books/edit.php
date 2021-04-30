@@ -1,28 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
-    header('Location: ../../login.php');
-    exit();
-}
-
-$title = "Modifier un livre";
-$css = "../../layouts/css";
-$js = "../../layouts/js";
-$navLinks = [
-    "home" => "../../index.php",
-    "loan" => "../../onloan.php",
-    "book" => "../../books.php",
-    "admin_book" => "index.php",
-    "admin_user" => "../users/index.php",
-    "profile" => "../../profile.php",
-    "logout" => "../../logout.php"
-];
-$pageName = $navLinks["admin_book"];
-require_once "../../includes/templates/header.php";
-require_once "../../includes/env/db.php";
-require_once "../../includes/templates/nav.php";
-require_once "../../includes/functions/fn.php";
-check_user_state();
+require_once "../../includes/templates/init_book.php";
 
 $id = isset($_GET['id']) && is_numeric($_GET['id'])  ? intval($_GET['id']):0;
 $sql = "SELECT * FROM `books` WHERE id = :id";

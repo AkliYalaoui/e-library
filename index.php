@@ -1,26 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['logged'])) {
-  header('Location: login.php');
-  exit();
-}
-$title = "Acceuil";
 $homeBody = "home-body";
-$navLinks = [
-  "home" => "index.php",
-  "loan" => "onloan.php",
-  "book" => "books.php",
-  "admin_book" => "admin/books/index.php",
-  "admin_user" => "admin/users/index.php",
-  "profile" => "profile.php",
-  "logout" => "logout.php"
-];
-$pageName = $navLinks['home'];
-require_once "includes/templates/header.php";
-require_once "includes/env/db.php";
-require_once "includes/templates/nav.php";
-require_once "includes/functions/fn.php";
-check_user_state();
+$title = "Acceuil";
+$key = "home";
+require_once "includes/templates/init_base.php";
 
 ?>
 <div class="overlay">

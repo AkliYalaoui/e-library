@@ -1,49 +1,16 @@
 <?php
-session_start();
-if(!isset($_SESSION['logged']) || $_SESSION['is_active'] == 1){
-    header('Location: login.php');
-    exit();
-}
 
 $title = "Profile";
-$navLinks = [
-  "home" => "index.php",
-  "loan" => "onloan.php",
-  "book" => "books.php",
-  "admin_book" => "admin/books/index.php",
-  "admin_user" => "admin/users/index.php",
-  "profile" => "profile.php",
-  "logout" => "logout.php"
-];
-require_once "includes/templates/header.php";
-require_once "includes/env/db.php";
-require_once "includes/templates/nav.php";
-$id = $_SESSION['id'];
-$sql = "SELECT * FROM `users` WHERE id = :id";
-        $stmt = $con->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_OBJ);
-        
-if(!$user){
-  header('Location: logout.php');
-  exit();
-}else{
-  $_SESSION['logged'] = "user";
-  $_SESSION['id'] = $user->id;
-  $_SESSION['email'] = $user->email;
-  $_SESSION['name'] = $user->name;
-  $_SESSION['is_admin'] = $user->is_admin;
-  $_SESSION['is_active'] = $user->is_active;
-}
+$key = null;
+require_once "includes/templates/init_base.php";
 
 if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email'],$_POST['password'],$_POST['password_confirmation'])){
 
-    $name = trim(filter_var($_POST['name'],FILTER_SANITIZE_STRING));
-    $email = trim(filter_var($_POST['email'],FILTER_SANITIZE_EMAIL));
-    $password = trim(filter_var($_POST['password'],FILTER_SANITIZE_STRING));
-    $password_confirmation = trim(filter_var($_POST['password_confirmation'],FILTER_SANITIZE_STRING));
-
+  $name = sanitize_string($_POST['name']);
+  $email = sanitize_email($_POST['email']);
+  $password = sanitize_string($_POST['password']);
+  $password_confirmation = sanitize_string($_POST['password_confirmation']);
+  
     if(strlen($name) < 4 || strlen($name) > 20){
         $err_name = "La longueur de ce champs doit etre comprise entre 4 and 20 charactères";
     }
@@ -65,31 +32,11 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'],$_POST['email']
     
     if(!isset($err_name) && !isset($err_email) && !isset($err_password) && !isset($err_password_confirmation) ) {
 
-        $sql = "SELECT * FROM `users` WHERE id != :id AND (email = :email OR `name` = :name)";
-        $stmt = $con->prepare($sql);
-        $stmt->bindParam(':id', $user->id);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':name', $name);
-        $stmt->execute();
-        $count = $stmt->rowCount();
-        if ($count === 0) {
-            $sql = "UPDATE `users` SET `name`=:name,email=:email,password=:password WHERE id = :id";
-            $stmt = $con->prepare($sql);
-            $stmt->bindParam(':id', $user->id);
-            $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':email', $email);
-            $password = strlen($password) > 0 ? sha1($password) : $user->password;
-            $stmt->bindParam(':password', $password);
-            $stmt->execute();
-            if(!$stmt->execute()){
+        if (!user_exists($name,$email,$user->id)) {
+            if(!update_user($user,$name,$email,$password)){
                 $err_create_user = "Erreur, nous n'avons pas pu modifier votre profile";
             }else{
-                $_SESSION['logged'] = "user";
-                $_SESSION['id'] = $user->id;
-                $_SESSION['email'] = $user->email;
-                $_SESSION['name'] = $user->name;
-                $_SESSION['is_admin'] = $user->is_admin;
-                $_SESSION['is_active'] = $user->is_active;
+                set_user_session($email,$name,$user->id,$user->is_admin,$user->is_active);
                 header('Location: profile.php');
                 exit();
             }

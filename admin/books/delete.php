@@ -1,13 +1,6 @@
 <?php
-session_start();
-if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
-    header('Location: ../../login.php');
-    exit();
-}
-
-require_once "../../includes/env/db.php";
-require_once "../../includes/functions/fn.php";
-check_user_state();
+$deny = true;
+require_once "../../includes/templates/init_book.php";
 
 if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['thumbnail'])){
   $thumbnail = filter_var($_POST['thumbnail'],FILTER_SANITIZE_STRING);

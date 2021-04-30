@@ -1,14 +1,8 @@
 <?php
 
-session_start();
-if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
-header('Location: ../../login.php');
-exit();
-}
+$deny = true;
+require_once "../../includes/templates/init_user.php";
 
-require_once "../../includes/env/db.php";
-require_once "../../includes/functions/fn.php";
-check_user_state();
 
 if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['approve'],$_POST['id'])){
     $id = filter_var($_POST['id'],FILTER_SANITIZE_NUMBER_INT);

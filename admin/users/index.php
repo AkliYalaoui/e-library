@@ -1,38 +1,12 @@
 <?php
-session_start();
-if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
-    header('Location: ../../login.php');
-    exit();
-}
-
-$title = "Gestion des utilisateurs";
-$css = "../../layouts/css";
-$js = "../../layouts/js";
-$navLinks = [
-        "home" => "../../index.php",
-        "loan" => "../../onloan.php",
-        "book" => "../../books.php",
-        "admin_book" => "../books/index.php",
-        "admin_user" => "index.php",
-        "profile" => "../../profile.php",
-        "logout" => "../../logout.php"
-];
-$pageName = $navLinks["admin_user"];
-require_once "../../includes/templates/header.php";
-require_once "../../includes/env/db.php";
-require_once "../../includes/templates/nav.php";
-require_once "../../includes/functions/fn.php";
-check_user_state();
+require_once "../../includes/templates/init_user.php";
 
 if(isset($_GET['filter']) && filter_var($_GET['filter'],FILTER_SANITIZE_STRING) === "approve" ){
-  $stmt = $con->prepare('SELECT * FROM `users` WHERE name != :name AND is_active = 1  ORDER BY created_at DESC');
+  $users = get_all_users();
 }else{
-  $stmt = $con->prepare('SELECT * FROM `users` WHERE name != :name ORDER BY created_at DESC');
+  $users = get_filtred_users();
 }
 
-$stmt->bindParam(':name',$_SESSION['name']);
-$stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_OBJ);
 ?>
 <div class="t-container">
   <?php if(!isset($_GET['filter'])): ?>

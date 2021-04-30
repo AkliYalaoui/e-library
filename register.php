@@ -7,15 +7,16 @@ if (isset($_SESSION['logged'])) {
 
 $title = "Register";
 $loginBody = 'login-body flex';
+require_once "includes/functions/fn.php";
 require_once "includes/templates/header.php";
 require_once "includes/env/db.php";
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'])) {
 
-  $name = trim(filter_var($_POST['name'], FILTER_SANITIZE_STRING));
-  $email = trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
-  $password = trim(filter_var($_POST['password'], FILTER_SANITIZE_STRING));
-  $password_confirmation = trim(filter_var($_POST['password_confirmation'], FILTER_SANITIZE_STRING));
+  $name = sanitize_string($_POST['name']);
+  $email = sanitize_email($_POST['email']);
+  $password = sanitize_string($_POST['password']);
+  $password_confirmation = sanitize_string($_POST['password_confirmation']);
 
   if (strlen($name) < 4 || strlen($name) > 20) {
     $err_name = "La longueur de ce champs doit etre comprise entre 4 and 20 charactères";
@@ -32,28 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'], $_POST['email
 
   if (!isset($err_name) && !isset($err_email) && !isset($err_password) && !isset($err_password_confirmation)) {
 
-    $sql = "SELECT * FROM `users` WHERE email = :email OR `name` = :name";
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':name', $name);
-    $stmt->execute();
-    $count = $stmt->rowCount();
-    if ($count === 0) {
-      $sql = "INSERT INTO `users`(`name`,email,password,is_admin,is_active) VALUES (:name,:email,:password,1,1)";
-      $stmt = $con->prepare($sql);
-      $stmt->bindParam(':name', $name);
-      $stmt->bindParam(':email', $email);
-      $password = sha1($password);
-      $stmt->bindParam(':password', $password);
-      $stmt->execute();
-      if ($stmt->rowCount() === 0) {
+    if (!user_exists($email,$name)) {
+      if (!create_user($name,$email,$password)) {
         $err_create_user = "Erreur, nous n'avons pas pu créer ce compte";
       } else {
-        $_SESSION['logged'] = "user";
-        $_SESSION['email'] = $email;
-        $_SESSION['name'] = $name;
-        $_SESSION['is_admin'] = 1;
-        $_SESSION['is_active'] = 1;
+        set_user_session($email,$name);
         header('Location: index.php');
         exit();
       }

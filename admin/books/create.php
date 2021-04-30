@@ -1,28 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['logged']) || !$_SESSION['is_admin'] == 0){
-    header('Location: ../../login.php');
-    exit();
-}
-
-$title = "Ajouter un livre";
-$css = "../../layouts/css";
-$js = "../../layouts/js";
-$navLinks = [
-    "home" => "../../index.php",
-    "loan" => "../../onloan.php",
-    "book" => "../../books.php",
-    "admin_book" => "index.php",
-    "admin_user" => "../users/index.php",
-    "profile" => "../../profile.php",
-    "logout" => "../../logout.php"
-];
-$pageName = $navLinks["admin_book"];
-require_once "../../includes/templates/header.php";
-require_once "../../includes/env/db.php";
-require_once "../../includes/templates/nav.php";
-require_once "../../includes/functions/fn.php";
-check_user_state();
+require_once "../../includes/templates/init_book.php";
 
 if( $_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['title'],$_POST['author'],$_POST['isbn'],$_POST['publisher'],$_POST['pages'],$_POST['publication_date'],$_POST['loan_duration'],$_FILES['thumbnail'],$_POST['overview'])){
 

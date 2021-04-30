@@ -7,27 +7,16 @@ if (isset($_SESSION['logged'])) {
 
 $title = "Login";
 $loginBody = 'login-body flex';
+require_once "includes/functions/fn.php";
 require_once "includes/templates/header.php";
 require_once "includes/env/db.php";
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['email'], $_POST['password'])) {
-  $email = trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
-  $password = trim(filter_var($_POST['password'], FILTER_SANITIZE_STRING));
+  $email = sanitize_email($_POST['email']);
+  $password = sanitize_string($_POST['password']);
 
-  $sql = "SELECT * FROM `users` WHERE email = :email AND password = :password";
-  $stmt = $con->prepare($sql);
-  $stmt->bindParam(':email', $email);
-  $password = sha1($password);
-  $stmt->bindParam(':password', $password);
-  $stmt->execute();
-  $user = $stmt->fetch(PDO::FETCH_OBJ);
-  if ($stmt->rowCount() > 0) {
-    $_SESSION['logged'] = "user";
-    $_SESSION['id'] = $user->id;
-    $_SESSION['email'] = $user->email;
-    $_SESSION['name'] = $user->name;
-    $_SESSION['is_admin'] = $user->is_admin;
-    $_SESSION['is_active'] = $user->is_active;
+  if (user_login($email,$password)) {
+    set_user_session($user->email,$user->name,$user->id,$user->is_admin,$user->is_active);
     header('Location: index.php');
     exit();
   } else {

@@ -1,48 +1,11 @@
 <?php
-session_start();
-if(!isset($_SESSION['logged'])){
-    header('Location: login.php');
-    exit();
-}
 
 $title = "Livres";
-$navLinks = [
-    "home" => "index.php",
-    "loan" => "onloan.php",
-    "book" => "books.php",
-    "admin_book" => "admin/books/index.php",
-    "admin_user" => "admin/users/index.php",
-    "profile" => "profile.php",
-    "logout" => "logout.php"
-];
-$pageName = $navLinks["book"];
-require_once "includes/templates/header.php";
-require_once "includes/env/db.php";
-require_once "includes/templates/nav.php";
+$key = "book";
+require_once "includes/templates/init_base.php";
 
-$id = $_SESSION['id'];
-$sql = "SELECT * FROM `users` WHERE id = :id";
-        $stmt = $con->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_OBJ);
-if(!$user){
-  header('Location: logout.php');
-  exit();
-}else{
-  $_SESSION['logged'] = "user";
-  $_SESSION['id'] = $user->id;
-  $_SESSION['email'] = $user->email;
-  $_SESSION['name'] = $user->name;
-  $_SESSION['is_admin'] = $user->is_admin;
-  $_SESSION['is_active'] = $user->is_active;
-}
 $start_row = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page'] - 1)*10 : 0;
-
-$stmt = $con->prepare('SELECT * FROM `books` ORDER BY created_at DESC LIMIT :row,10');
-$stmt->bindParam(":row",$start_row,PDO::PARAM_INT);
-$stmt->execute();
-$books = $stmt->fetchAll(PDO::FETCH_OBJ);
+$books = get_books($start_row);
 if(count($books) > 0):
 $count = $con->query("SELECT count(id) FROM `books`")->rowCount();
 
