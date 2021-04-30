@@ -15,6 +15,7 @@ $navLinks = [
   "profile" => "profile.php",
   "logout" => "logout.php"
 ];
+$pageName = "";
 require_once "includes/templates/header.php";
 require_once "includes/env/db.php";
 require_once "includes/templates/nav.php";

@@ -6,22 +6,29 @@
     </div>
     <ul class="nav-links" id="nav-menu">
       <li>
-        <a href="<?php echo $navLinks['home'] ?>">Acceuil<i class="fa fa-home"></i></a>
+        <a href="<?php echo $navLinks['home'] ?>"
+          class="<?php echo $pageName == $navLinks['home'] ? "active":"" ?>">Acceuil<i class="fa fa-home"></i></a>
       </li>
       <?php if ($_SESSION['is_active'] == 0) : ?>
       <li>
-        <a href="<?php echo $navLinks['loan'] ?>">Mes Livres<i class="fa fa-book-dead"></i></a>
+        <a href="<?php echo $navLinks['loan'] ?>" class="<?php echo $pageName == $navLinks['loan'] ? "active":"" ?>">Mes
+          Livres<i class="fa fa-book-dead"></i></a>
       </li>
       <?php endif; ?>
       <li>
-        <a href="<?php echo $navLinks['book'] ?>">Livres<i class="fa fa-book-reader"></i></a>
+        <a href="<?php echo $navLinks['book'] ?>"
+          class="<?php echo $pageName == $navLinks['book'] ? "active":"" ?>">Livres<i class="fa fa-book-reader"></i></a>
       </li>
       <?php if ($_SESSION['is_admin'] == 0) : ?>
       <li>
-        <a href="<?php echo $navLinks['admin_book'] ?>">Gestion des livres<i class="fa fa-book"></i></a>
+        <a href="<?php echo $navLinks['admin_book'] ?>"
+          class="<?php echo $pageName == $navLinks['admin_book'] ? "active":"" ?>">Gestion des livres<i
+            class="fa fa-book"></i></a>
       </li>
       <li>
-        <a href="<?php echo $navLinks['admin_user'] ?>">Gestion des utilisateurs<i class="fa fa-user-friends"></i></a>
+        <a href="<?php echo $navLinks['admin_user'] ?>"
+          class="<?php echo $pageName == $navLinks['admin_user'] ? "active":"" ?>">Gestion des utilisateurs<i
+            class="fa fa-user-friends"></i></a>
       </li>
       <?php endif; ?>
       <li class="sub-nav">
